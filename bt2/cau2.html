@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="jquery-3.6.0.min.js"></script>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/DataTables/datatables.min.css"
+    />
+    <script type="text/javascript" src="/DataTables/datatables.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css"
+    />
+    <script>
+     
+    function F1(){
+     $.ajax({
+      url: 'https://62170eed71e7672e53725373.mockapi.io/test',
+      type: 'GET', //mặc định get
+      dataType: 'json', //mặc định là text
+      success:function(dataReturn){
+          console.log(dataReturn);
+          $.each(dataReturn, function(k,v){
+              var s = `
+                        <tr>
+                        <td>${v.id}</td>
+                        <td>${v.name}</td>
+                        <td>${v.birthday}</td>
+                        <td>${v.avatar}</td>
+                        </tr>
+                        `;
+              $('#example').append(s);
+          });
+      }
+            });
+          } 
+      
+  
+  </script>
+  </head>
+  <body onload="F1()">
+    <table id="example" class="display" style="width: 100%" >
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Name</th>
+          <th>Birthday</th>
+          <th>Avatar</th>
+        </tr>
+      </thead>
+     
+    </table>
+  </body>
+  <script>
+    $(document).ready(function () {
+      var table = $("#example").DataTable();
+
+      $("#example tbody").on("click", "tr", function () {
+        var data = table.row(this).data();
+        alert("You clicked on " + data[0] + "'s row");
+      });
+    });
+  </script>
+</html>

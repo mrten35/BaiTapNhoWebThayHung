@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+      #list td {
+        border: 1px solid #000;
+      }
+    </style>
+  </head>
+  <body>
+    <button onclick="show()">Show data</button>
+    <br />
+    <form id="form1">
+      Tên: <input type="text" id="name" /> <br /><br />
+      Avatar <input type="file" id="avatar" /> <br />
+      Id: <input type="text" id="id" /> <br /><br />
+      <input type="submit" value="Tạo mới" /> <br />
+    </form>
+    <div id="data">
+      <table id="list"></table>
+    </div>
+    <script>
+      function show() {
+        $.ajax({
+          url: "https://6215c406c9c6ebd3ce3110c4.mockapi.io/book",
+          type: "GET",
+          dataType: "json",
+          success: function (data) {
+            var html = data.map((item) => {
+              return `<tr>
+                    <td>${item.createdAt}</td>
+                    <td>${item.name}</td>
+                    <td>${item.avatar}</td>
+                    <td>${item.id}</td>
+                    <td id=${item.id} onclick= xoa(${item.id})>xoa</td>
+
+                    </tr>`;
+            });
+            document.getElementById("list").innerHTML = html;
+          },
+        });
+      }
+      document.getElementById("form1").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const name = document.getElementById("name").value;
+        const avatar = document.getElementById("avatar").value;
+        const id = document.getElementById("id").value;
+
+        $.ajax({
+          type: "POST",
+          url: "https://6215c406c9c6ebd3ce3110c4.mockapi.io/book",
+          data: {
+            name,
+            avatar,
+            id,
+          },
+          success: function () {
+            show();
+          },
+        });
+      });
+      function xoa(id) {
+        $.ajax({
+          type: "DELETE",
+          url: "https://6215c406c9c6ebd3ce3110c4.mockapi.io/book/" + id,
+          success: () => {
+            show();
+            console.log("xoa thanh cong");
+          },
+        });
+      }
+    </script>
+  </body>
+</html>
